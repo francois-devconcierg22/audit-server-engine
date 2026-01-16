@@ -1,0 +1,10 @@
+# Audit Engine
+
+Moteur d’audit serveur & architecture web basé sur des règles déterministes.
+
+- Grille d’audit versionnée (YAML)
+- Collecte automatisée
+- Décision non improvisable
+- Applicable avec ou sans WordPress
+
+Ce dépôt constitue la source de vérité technique de l’audit.

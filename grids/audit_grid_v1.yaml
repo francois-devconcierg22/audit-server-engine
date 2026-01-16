@@ -1,0 +1,168 @@
+meta:
+  name: "Audit Serveur & Architecture Web"
+  version: "1.0"
+  scope:
+    - linux_server
+    - web_stack
+    - optional_wordpress
+  philosophy: "rule_based_no_improvisation"
+
+context_parameters:
+  site_type:
+    allowed: [vitrine, ecommerce, applicatif]
+  downtime_tolerance:
+    allowed: [faible, moyen, eleve]
+  traffic_level:
+    allowed: [bas, moyen, eleve]
+
+domains:
+
+  server:
+    uptime:
+      fact: uptime_hours
+      rules:
+        - if: "< 24"
+          level: critical
+        - else: ok
+
+    load:
+      fact: load_ratio_cpu
+      rules:
+        - if: "> 1.5"
+          level: critical
+        - else: ok
+
+    memory:
+      fact: ram_free_percent
+      rules:
+        - if: "< 15"
+          level: critical
+        - if: ">= 15 && < 30"
+          level: warning
+        - else: ok
+
+    disk:
+      fact: disk_used_percent
+      rules:
+        - if: ">= 90"
+          level: critical
+        - if: ">= 80 && < 90"
+          level: warning
+        - else: ok
+
+  network:
+    firewall:
+      fact: firewall_present
+      rules:
+        - if: false
+          level: warning
+        - else: ok
+
+    ssh_root:
+      fact: ssh_root_login
+      rules:
+        - if: true
+          level: warning
+        - else: ok
+
+    exposed_ports:
+      fact: unexpected_open_ports
+      rules:
+        - if: "> 0"
+          level: critical
+        - else: ok
+
+  backups:
+    presence:
+      fact: backup_detected
+      rules:
+        - if: false
+          level: critical
+        - else: ok
+
+    tested:
+      fact: backup_tested_days
+      rules:
+        - if: "> 90"
+          level: warning
+        - if: "null"
+          level: warning
+        - else: ok
+
+  architecture:
+    isolation:
+      fact: app_db_isolated
+      rules:
+        - if: false
+          level: critical
+        - else: ok
+
+    rollback:
+      fact: rollback_available
+      rules:
+        - if: false
+          level: critical
+        - else: ok
+
+  wordpress:
+    enabled_if:
+      fact: wordpress_detected
+      equals: true
+
+    updates:
+      fact: wp_updates_in_prod
+      rules:
+        - if: true
+          level: critical
+        - else: ok
+
+    plugins:
+      fact: wp_unmaintained_plugins
+      rules:
+        - if: "> 0"
+          level: critical
+        - else: ok
+
+    database:
+      fact: wp_db_exportable
+      rules:
+        - if: false
+          level: warning
+        - else: ok
+
+decision_engine:
+
+  isolated_deployment_required:
+    if_any:
+      - backups.presence.level == "critical"
+      - architecture.rollback.level == "critical"
+      - wordpress.updates.level == "critical"
+      - context.downtime_tolerance == "faible"
+    result: true
+
+  orientation:
+    rules:
+      - if: isolated_deployment_required == true
+        output: "architecture_isolee_requise"
+      - if: isolated_deployment_required == false
+        output: "architecture_simple_possible"
+
+allowed_recommendations:
+
+  architecture_isolee_requise:
+    text: >
+      Une architecture permettant des déploiements isolés avec retour arrière rapide
+      est requise au regard des critères observés.
+    compatible_solutions:
+      - blue_green
+      - staging_isole
+      - parallel_deployment
+
+  architecture_simple_possible:
+    text: >
+      L’architecture actuelle peut être maintenue sous réserve d’actions de sécurisation ciblées.
+
+report_outputs:
+  - risk_levels_by_domain
+  - global_orientation
+  - allowed_recommendations_only
