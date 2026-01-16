@@ -1,0 +1,20 @@
+# Environnement & secrets
+.env
+.venv/
+__pycache__/
+
+# Données runtime / client
+facts/
+reports/
+context/
+data/
+client_row.csv
+
+# Fichiers générés
+*.raw.json
+*.filtered.json
+*.pdf
+
+# IDE / OS
+.DS_Store
+.vscode/

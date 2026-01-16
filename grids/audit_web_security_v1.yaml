@@ -1,0 +1,26 @@
+meta:
+  name: Audit Sécurité Web
+  version: 1.0
+  scope: web_application
+  requires_root: false
+
+facts_required:
+  ssl:
+    certificate_present: required
+    certificate_expiry_days: required
+    https_forced: required
+
+  filesystem:
+    web_root_permissions: required     # 755/644 attendu
+    wp_config_permissions: optional
+
+  headers:
+    security_headers_present: optional
+
+  malware:
+    suspicious_files_detected: optional
+
+out_of_scope:
+  - server_firewall
+  - wordpress_plugins
+  - performance_metrics

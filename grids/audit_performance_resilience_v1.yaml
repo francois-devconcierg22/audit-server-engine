@@ -1,0 +1,30 @@
+meta:
+  name: Audit Performance & Résilience
+  version: 1.0
+  scope: advanced
+  requires_root: true
+
+facts_required:
+  stack:
+    php_version: required
+    php_eol: required
+    mysql_version: required
+    mysql_eol: optional
+    opcache_enabled: optional
+    redis_enabled: optional
+
+  performance:
+    response_time_ms: optional
+    slow_queries_detected: optional
+    cpu_spikes_detected: optional
+
+  backups:
+    backups_externalized: required
+    backup_retention_days: optional
+    restore_tested: optional
+
+  deployment:
+    rollback_available: required   # snapshot / blue-green / none
+
+out_of_scope:
+  - wordpress_content_quality

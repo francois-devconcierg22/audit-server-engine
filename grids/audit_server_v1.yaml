@@ -1,0 +1,35 @@
+meta:
+  name: Audit Serveur & Infrastructure
+  version: 1.0
+  scope: vps_dedicated
+  requires_root: true
+
+facts_required:
+  system:
+    os_name: required
+    os_version: required
+    uptime_hours: required
+    cpu_load_15m: required
+    ram_free_percent: required
+    disk_used_percent: required
+
+  security_infra:
+    firewall_present: required
+    fail2ban_present: optional
+    ssh_root_login: required
+    open_ports: required
+
+  resilience:
+    backups_present: required
+    backups_location: optional     # same_disk / external / unknown
+    snapshots_present: optional
+    cron_system_active: optional
+
+  logs:
+    syslog_errors_recent: optional
+    web_5xx_recent: optional
+
+out_of_scope:
+  - wordpress
+  - php_version
+  - database_analysis

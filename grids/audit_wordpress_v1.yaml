@@ -1,0 +1,33 @@
+meta:
+  name: Audit WordPress
+  version: 1.0
+  scope: wordpress_only
+  requires_root: false
+
+facts_required:
+  wordpress:
+    core_version: required
+    core_eol: required
+    auto_updates_enabled: optional
+
+  plugins:
+    total_plugins: required
+    outdated_plugins: required
+    abandoned_plugins: optional
+
+  users:
+    admin_count: required
+    dormant_admins: optional
+    unknown_admins: optional
+
+  database:
+    db_size_mb: required
+    orphan_tables_detected: optional
+
+  cron:
+    wp_cron_active: required
+
+out_of_scope:
+  - os
+  - firewall
+  - ssl_certificate
