@@ -1,0 +1,46 @@
+version: 1
+name: audit_context_schema_v1
+description: >
+  Schéma canonique des paramètres d’entrée de l’audit.
+  Source de vérité pour la génération de audit_context.yaml
+  depuis une ligne Notion. Aucune interprétation autorisée.
+
+fields:
+
+  site_type:
+    label: "Type de site"
+    notion_property: "Type de site"
+    type: select
+    required: true
+    allowed_values: [vitrine, ecommerce, applicatif]
+
+  technologie_principale:
+    label: "Technologie principale"
+    notion_property: "Technologie principale"
+    type: select
+    required: true
+
+  type_hebergement:
+    label: "Type d'hebergement"
+    notion_property: "Type d'hebergement"
+    type: select
+    required: true
+
+  mode_audit:
+    label: "Mode d'audit"
+    notion_property: "Mode d'audit"
+    type: select
+    required: true
+
+  downtime_tolerance:
+    label: "Tolerance a l'indisponibilite"
+    notion_property: "Tolerance a l'indisponibilite"
+    type: select
+    required: true
+    allowed_values: [faible, moyen, eleve]
+
+  audit_status:
+    label: "Statut audit"
+    notion_property: "Statut audit"
+    type: select
+    required: true

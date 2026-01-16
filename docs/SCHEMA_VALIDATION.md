@@ -20,3 +20,12 @@
 - Les libellés sont sensibles à la casse / accents / apostrophes.
 - Aucune option n’est ajoutée à la main dans Notion.
 - Toute évolution passe par: CSV référentiel → script → validation.
+
+### downtime_tolerance — RTO mapping (figé)
+
+- faible : RTO < 10 minutes
+- moyen  : RTO < 2 heures
+- eleve  : RTO > 2 heures
+
+Ce mapping est contractuel et utilisé par le moteur de décision.
+Aucune interprétation humaine n’est autorisée.
